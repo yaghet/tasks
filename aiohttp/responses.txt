@@ -1,0 +1,3 @@
+{"url": "https://nonexistent.url", "Error": "Cannot connect to host nonexistent.url:443 ssl:default [nodename nor servname provided, or not known]"}
+{"url": "https://httpbin.org/status/200", "error": "Empty response"}
+{"url": "https://example.com", "error": "Invalid JSON"}

@@ -12,29 +12,28 @@ logger = logging.getLogger(__name__)
 async def fetch_url(
     session: aiohttp.ClientSession, url: str, sem: asyncio.Semaphore
 ) -> Optional[dict[str, str]]:
+    timeout = aiohttp.ClientTimeout(total=15)
     async with sem:
-        print("efefefe")
         try:
-            timeout = aiohttp.ClientTimeout(total=15)
             async with session.get(url=url, timeout=timeout) as response:
                 logger.info(f"Trying to fetch with URL {url}")
-                if response.status == 200:
-                    text = await response.text()
-                    if text.strip():
-                        try:
-                            data = json.loads(text)
-                            return {"url": url, "content": data}
-                        except json.JSONDecodeError:
-                            logger.warning(f"Invalid JSON from URL {url}")
-                            return {"url": url, "error": "Invalid JSON"}
-                    else:
-                        logger.warning(f"Empty response body from URL {url}")
-                        return {"url": url, "error": "Empty response"}
-                else:
+                if response.status != 200:
                     logger.warning(
                         f"Unexpected status code, expected 200, but got {response.status} instead"
                     )
                     return {"url": url, "status code": response.status}
+
+                text = await response.text()
+                if text:
+                    try:
+                        data = json.loads(text)
+                        return {"url": url, "content": data}
+                    except json.JSONDecodeError:
+                        logger.warning(f"Invalid JSON from URL {url}")
+                        return {"url": url, "error": "Invalid JSON"}
+                else:
+                    logger.warning(f"Empty response body from URL {url}")
+                    return {"url": url, "error": "Empty response"}
 
         except (aiohttp.ClientError, asyncio.TimeoutError) as exp:
             logger.warning(f"Error fetching URL {url}, {str(exp)}")

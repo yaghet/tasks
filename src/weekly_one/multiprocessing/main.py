@@ -22,7 +22,7 @@ def timer(func: Callable) -> Callable:
 
 
 def generate_data(n: int) -> list[int]:
-    return [random.randint(1, 99) for _ in range(n)]
+    return [random.randint(10000000, 99) for _ in range(n)]
 
 
 def process_number(number: int) -> int:

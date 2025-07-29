@@ -1,6 +1,7 @@
-from wsgiref.simple_server import make_server
-import requests
 import json
+from wsgiref.simple_server import make_server
+
+import requests
 
 HOST = "localhost"
 PORT = 8000

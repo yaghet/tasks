@@ -1,9 +1,9 @@
 import random
 import time
-from concurrent.futures import as_completed, ThreadPoolExecutor
-from multiprocessing import Pool, Process, Queue, cpu_count
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import wraps
+from multiprocessing import Pool, Process, Queue, cpu_count
 
 WORKERS = cpu_count()
 
